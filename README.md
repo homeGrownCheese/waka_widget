@@ -7,7 +7,7 @@ This is Scriptable widget I put together using a few other variations from the S
 ### How to use
 
 - Download Scriptable
-- Sign up at WakaTime
+- Sign up at [WakaTime](https://wakatime.com/)
 - Get API key from account info
 - Change username and API key in script
 
