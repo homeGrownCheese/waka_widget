@@ -23,7 +23,7 @@ const YOURNAME = 'ChangeMe';
 const WAKAUSER = 'ChangeMe';
 
 const DATERANGE = 'last_7_days';
-const TIMEFRAME = 'Today';
+
 
 const API_KEY = '?api_key=YourAPIKEY'
 
@@ -43,14 +43,15 @@ widget.backgroundColor = new Color('#ffffff');
 let stack = widget.addStack();
 stack.layoutVertically();
 
+let timeFrame = 'Today';
 
 if (data.data.languages.length == 0) {
-    TIMEFRAME = 'Last 7 days';
+    timeFrame = 'Last 7 days';
     let url = "https://wakatime.com/api/v1/users/" + WAKAUSER + "/stats/" + DATERANGE + API_KEY;
     data = await fetchJson(url);
 }
 
-let titleLine = stack.addText(TIMEFRAME);
+let titleLine = stack.addText(timeFrame);
 titleLine.textColor = Color.white();
 titleLine.textOpacity = 0.7;
 titleLine.font = new Font(FONT_NAME, FONT_SIZE);
