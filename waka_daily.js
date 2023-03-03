@@ -27,11 +27,22 @@ const DATERANGE = 'last_7_days';
 
 const API_KEY = '?api_key=YourAPIKEY'
 
-const WAKA_URL = "https://wakatime.com/api/v1/users/current/status_bar/today" + API_KEY;
+const WAKA_TODAY_URL = "https://wakatime.com/api/v1/users/current/status_bar/today" + API_KEY;
+
+const WAKA_WEEKLY_URL = "https://wakatime.com/api/v1/users/" + WAKAUSER + "/stats/" + DATERANGE + API_KEY;
 
 
-let data = await fetchJson(WAKA_URL);
+// getting data
+let data = await fetchJson(WAKA_TODAY_URL);
 
+let timeFrame = 'Today';
+
+if (data.data.languages.length == 0) {
+    timeFrame = 'Last 7 days';
+    data = await fetchJson(WAKA_WEEKLY_URL);
+}
+
+// set up for widget
 let widget = new ListWidget();
 let bgColor = new LinearGradient();
 bgColor.colors = [new Color(COLORS.bg0), new Color(COLORS.bg1)];
@@ -39,18 +50,11 @@ bgColor.locations = [0.0, 1.0];
 widget.backgroundGradient = bgColor;
 widget.backgroundColor = new Color('#ffffff');
 
-
 let stack = widget.addStack();
 stack.layoutVertically();
 
-let timeFrame = 'Today';
 
-if (data.data.languages.length == 0) {
-    timeFrame = 'Last 7 days';
-    let url = "https://wakatime.com/api/v1/users/" + WAKAUSER + "/stats/" + DATERANGE + API_KEY;
-    data = await fetchJson(url);
-}
-
+// populating widget with data
 let titleLine = stack.addText(timeFrame);
 titleLine.textColor = Color.white();
 titleLine.textOpacity = 0.7;
@@ -63,10 +67,13 @@ for (let i = 0; (i < data.data.languages.length) && (i < 9); i++) {
     line.font = new Font(FONT_NAME, 10);
 }
 
-
+// final to display script
 Script.setWidget(widget);
 Script.complete();
 
+
+
+// data retrieval
 async function fetchJson(url, headers) {
     try {
         console.log(`Fetching url: ${url}`);
